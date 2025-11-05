@@ -1,6 +1,25 @@
+
 import React from 'react';
-import type { FoodEvent, AccessLevel } from '../../types';
+import type { FoodEvent, AccessLevel, VenueWithDistance } from '../../types';
 import { formatTime } from '../../utils/time';
+
+const translateAccessLevel = (level: AccessLevel): string => {
+    switch (level) {
+        case 'WALK_IN': return 'Vrije inloop';
+        case 'REGISTRATION': return 'Registratie vereist';
+        case 'REFERRAL': return 'Verwijzing nodig';
+        default: return level;
+    }
+};
+
+const translateDietaryTag = (tag: string): string => {
+    switch (tag.toLowerCase()) {
+        case 'vegetarian': return 'Vegetarisch';
+        case 'vegan': return 'Veganistisch';
+        case 'halal': return 'Halal';
+        default: return tag;
+    }
+};
 
 interface EventListItemProps {
     event: FoodEvent;
@@ -69,6 +88,7 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event, onEventClic
     const venue = event.venue;
     const now = new Date();
     const deadlinePassed = event.registrationDeadline && event.registrationDeadline < now;
+    const distance = (venue as VenueWithDistance).distance;
 
     return (
         <div
@@ -88,14 +108,14 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event, onEventClic
                     </div>
                      <div className="flex items-center mt-1 justify-start sm:justify-end">
                         <PinIcon />
-                        <span>{venue.address}</span>
+                        <span>{distance !== undefined ? `${distance.toFixed(1)} km • ` : ''}{venue.address}</span>
                     </div>
                 </div>
             </div>
             <div className="mt-3 pt-3 border-t border-border-color flex items-center flex-wrap gap-2">
                 <Tag
                     icon={<AccessLevelIcon level={event.accessLevel} />}
-                    label={event.accessLevel.replace('_', ' ')}
+                    label={translateAccessLevel(event.accessLevel)}
                     className="bg-gray-100 text-gray-800"
                 />
                 {event.accessLevel === 'REGISTRATION' && event.registrationDeadline && (
@@ -114,7 +134,7 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event, onEventClic
                     <Tag
                         key={tag}
                         icon={<DietaryIcon tag={tag} />}
-                        label={tag}
+                        label={translateDietaryTag(tag)}
                         className="bg-green-100 text-green-800"
                     />
                 ))}

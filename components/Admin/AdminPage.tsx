@@ -105,21 +105,31 @@ export const AdminPage: React.FC<AdminPageProps> = ({
                         />
                         <button 
                             onClick={handleImportClick} 
-                            className="px-4 py-2 text-sm font-medium rounded-md border border-border-color text-text-secondary bg-white hover:bg-surface"
+                            aria-label="Importeren"
+                            className="flex items-center justify-center h-9 w-9 md:h-auto md:w-auto md:px-4 md:py-2 text-sm font-medium rounded-md border border-border-color text-text-secondary bg-white hover:bg-surface transition-all"
                         >
-                            Importeren
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span className="hidden md:inline ml-2">Importeren</span>
                         </button>
                         <button 
                             onClick={onExport} 
-                            className="px-4 py-2 text-sm font-medium rounded-md border border-border-color text-text-secondary bg-white hover:bg-surface"
+                            aria-label="Exporteren"
+                            className="flex items-center justify-center h-9 w-9 md:h-auto md:w-auto md:px-4 md:py-2 text-sm font-medium rounded-md border border-border-color text-text-secondary bg-white hover:bg-surface transition-all"
                         >
-                            Exporteren
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            <span className="hidden md:inline ml-2">Exporteren</span>
                         </button>
                         <button 
                             onClick={handleAddNew} 
-                            className="px-4 py-2 text-sm font-medium rounded-md border border-transparent text-white bg-accent hover:bg-red-600"
+                            aria-label={activeTab === 'events' ? 'Nieuw Event toevoegen' : 'Nieuwe Locatie toevoegen'}
+                            className="flex items-center justify-center h-9 w-9 md:h-auto md:w-auto md:px-4 md:py-2 text-sm font-medium rounded-md border border-transparent text-white bg-accent hover:bg-red-600 transition-all"
                         >
-                            {activeTab === 'events' ? 'Nieuw Event' : 'Nieuwe Locatie'}
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
+                            <span className="hidden md:inline ml-2">{activeTab === 'events' ? 'Nieuw Event' : 'Nieuwe Locatie'}</span>
                         </button>
                     </div>
                 </div>

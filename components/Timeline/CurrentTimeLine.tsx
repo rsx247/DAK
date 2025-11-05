@@ -11,7 +11,7 @@ export const CurrentTimeLine: React.FC<CurrentTimeLineProps> = ({ currentTime, m
   const position = minutesToPosition(currentMinutes);
 
   return (
-    <div className="absolute top-0 bottom-0 z-10" style={{ left: `${position}px` }}>
+    <div className="absolute top-0 bottom-0 z-20" style={{ left: `${position}px` }}>
       <div className="w-0.5 h-full bg-accent"></div>
       <div className="absolute top-2 -ml-4">
         <div className="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-md">

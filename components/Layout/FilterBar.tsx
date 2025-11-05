@@ -33,36 +33,42 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, isAdm
   };
 
   return (
-    <div className="bg-white border-b border-border-color px-3 sticky top-[89px] z-20 overflow-x-scroll h-14">
-      <div className="max-w-screen-xl mx-auto flex items-center h-full space-x-2 whitespace-nowrap">
-        <FilterButton isActive={filters.distance === 5} onClick={() => handleFilterChange('distance', filters.distance === 5 ? Infinity : 5)}>
-          5 km
-        </FilterButton>
-        <FilterButton isActive={filters.accessLevel === 'WALK_IN'} onClick={() => handleFilterChange('accessLevel', filters.accessLevel === 'WALK_IN' ? 'ALL' : 'WALK_IN')}>
-          Vrije inloop
-        </FilterButton>
-        <FilterButton isActive={filters.eventType === 'MEALS'} onClick={() => handleFilterChange('eventType', filters.eventType === 'MEALS' ? 'ALL' : 'MEALS')}>
-          Maaltijden
-        </FilterButton>
-        <FilterButton isActive={filters.eventType === 'PACKAGES'} onClick={() => handleFilterChange('eventType', filters.eventType === 'PACKAGES' ? 'ALL' : 'PACKAGES')}>
-          Pakketten
-        </FilterButton>
-        <FilterButton isActive={filters.cost === 'FREE'} onClick={() => handleFilterChange('cost', filters.cost === 'FREE' ? 'ALL' : 'FREE')}>
-          Gratis
-        </FilterButton>
+    // By separating the sticky positioning, overflow scrolling, and sized content into three distinct divs,
+    // we create a more robust layout that avoids browser rendering bugs where the bar would collapse.
+    <div className="bg-white border-b border-border-color sticky top-[89px] z-20">
+      <div className="h-14">
+        <div className="overflow-x-auto h-full">
+            <div className="px-3 h-full max-w-screen-xl mx-auto flex items-center space-x-2 whitespace-nowrap">
+                <FilterButton isActive={filters.distance === 5} onClick={() => handleFilterChange('distance', filters.distance === 5 ? Infinity : 5)}>
+                  5 km
+                </FilterButton>
+                <FilterButton isActive={filters.accessLevel === 'WALK_IN'} onClick={() => handleFilterChange('accessLevel', filters.accessLevel === 'WALK_IN' ? 'ALL' : 'WALK_IN')}>
+                  Vrije inloop
+                </FilterButton>
+                <FilterButton isActive={filters.eventType === 'MEALS'} onClick={() => handleFilterChange('eventType', filters.eventType === 'MEALS' ? 'ALL' : 'MEALS')}>
+                  Maaltijden
+                </FilterButton>
+                <FilterButton isActive={filters.eventType === 'PACKAGES'} onClick={() => handleFilterChange('eventType', filters.eventType === 'PACKAGES' ? 'ALL' : 'PACKAGES')}>
+                  Pakketten
+                </FilterButton>
+                <FilterButton isActive={filters.cost === 'FREE'} onClick={() => handleFilterChange('cost', filters.cost === 'FREE' ? 'ALL' : 'FREE')}>
+                  Gratis
+                </FilterButton>
 
-        {isAdmin && (
-          <>
-            <div className="h-6 w-px bg-border-color mx-2"></div>
-            <FilterButton 
-              isActive={showDrafts} 
-              onClick={() => setShowDrafts(!showDrafts)}
-              className={showDrafts ? '!bg-yellow-500 !border-yellow-500 text-white' : ''}
-            >
-              Concepten
-            </FilterButton>
-          </>
-        )}
+                {isAdmin && (
+                  <>
+                    <div className="h-6 w-px bg-border-color mx-2"></div>
+                    <FilterButton 
+                      isActive={showDrafts} 
+                      onClick={() => setShowDrafts(!showDrafts)}
+                      className={showDrafts ? '!bg-yellow-500 !border-yellow-500 text-white' : ''}
+                    >
+                      Concepten
+                    </FilterButton>
+                  </>
+                )}
+            </div>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,16 @@
+
 import React from 'react';
-import type { Venue } from '../../types';
+import type { Venue, VenueCategory } from '../../types';
+
+const translateVenueCategory = (category: VenueCategory): string => {
+    switch (category) {
+        case 'COMMUNITY': return 'Sociaal';
+        case 'RELIGIOUS': return 'Religieus';
+        case 'FOOD_BANK': return 'Voedselbank';
+        case 'COMMERCIAL': return 'Commercieel';
+        default: return category;
+    }
+};
 
 interface AdminVenueListItemProps {
   venue: Venue;
@@ -7,9 +18,9 @@ interface AdminVenueListItemProps {
   onDelete: (venueId: string) => void;
 }
 
-const CategoryBadge: React.FC<{ category: string }> = ({ category }) => (
+const CategoryBadge: React.FC<{ category: VenueCategory }> = ({ category }) => (
   <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 capitalize">
-    {category.toLowerCase().replace('_', ' ')}
+    {translateVenueCategory(category)}
   </span>
 );
 

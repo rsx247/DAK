@@ -1,5 +1,25 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import type { Venue, FoodEvent, AccessLevel, VerificationStatus, VenueCategory, EventSubmissionData, RecurrenceRule, DayOfWeek, WeekOfMonth } from '../../types';
+
+const translateDietaryTag = (tag: string): string => {
+    switch (tag.toLowerCase()) {
+        case 'vegetarian': return 'Vegetarisch';
+        case 'vegan': return 'Veganistisch';
+        case 'halal': return 'Halal';
+        default: return tag;
+    }
+};
+
+const translateVenueCategory = (category: VenueCategory): string => {
+    switch (category) {
+        case 'COMMUNITY': return 'Sociaal';
+        case 'RELIGIOUS': return 'Religieus';
+        case 'FOOD_BANK': return 'Voedselbank';
+        case 'COMMERCIAL': return 'Commercieel';
+        default: return category;
+    }
+};
 
 interface AddEventFormProps {
     isOpen: boolean;
@@ -29,13 +49,13 @@ const weekOfMonthOptions: { label: string, value: WeekOfMonth }[] = [
 ];
 
 const dayOfWeekOptions: { label: string, value: DayOfWeek }[] = [
-    { label: 'Maandag', value: 1 },
-    { label: 'Dinsdag', value: 2 },
-    { label: 'Woensdag', value: 3 },
-    { label: 'Donderdag', value: 4 },
-    { label: 'Vrijdag', value: 5 },
-    { label: 'Zaterdag', value: 6 },
-    { label: 'Zondag', value: 0 },
+    { label: 'Ma', value: 1 },
+    { label: 'Di', value: 2 },
+    { label: 'Wo', value: 3 },
+    { label: 'Do', value: 4 },
+    { label: 'Vr', value: 5 },
+    { label: 'Za', value: 6 },
+    { label: 'Zo', value: 0 },
 ];
 
 export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onSubmit, venues, eventToEdit }) => {
@@ -89,7 +109,7 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
         setVenueOption('existing');
         setSelectedVenueId(venues.length > 0 ? venues[0].id : '');
         setNewVenue(initialNewVenueState);
-        setRecurrence({ frequency: 'WEEKLY', daysOfWeek: [now.getDay() as DayOfWeek] });
+        setRecurrence({ frequency: 'WEEKLY', daysOfWeek: [(now.getDay() === 0 ? 0 : now.getDay()) as DayOfWeek] });
         setMonthlyRecurrenceType('date');
         setError(null);
     }, [venues]);
@@ -119,7 +139,6 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                 setSelectedVenueId(eventToEdit.venueId);
                 setNewVenue(initialNewVenueState);
 
-                // FIX: Handle backward compatibility for recurrence rules
                 const recurrenceToSet = { ...(eventToEdit.recurrence || { frequency: 'NONE' as const }) };
                 if (recurrenceToSet.frequency === 'WEEKLY' && recurrenceToSet.dayOfWeek !== undefined && !recurrenceToSet.daysOfWeek) {
                     recurrenceToSet.daysOfWeek = [recurrenceToSet.dayOfWeek];
@@ -158,17 +177,16 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
         }
         
         let finalRecurrence = { ...recurrence };
-        // Clean up recurrence object before submitting
         if (finalRecurrence.frequency === 'WEEKLY') {
-            delete finalRecurrence.dayOfWeek;
-            delete finalRecurrence.monthDay;
-            delete finalRecurrence.weeksOfMonth;
-        } else if (finalRecurrence.frequency === 'BIWEEKLY' || (finalRecurrence.frequency === 'MONTHLY' && finalRecurrence.weeksOfMonth)) {
-            delete finalRecurrence.daysOfWeek;
-            delete finalRecurrence.monthDay;
-        } else if (finalRecurrence.frequency === 'MONTHLY' && finalRecurrence.monthDay) {
-            delete finalRecurrence.daysOfWeek;
-            delete finalRecurrence.weeksOfMonth;
+            delete finalRecurrence.dayOfWeek; delete finalRecurrence.monthDay; delete finalRecurrence.weeksOfMonth;
+        } else if (finalRecurrence.frequency === 'BIWEEKLY') {
+            delete finalRecurrence.daysOfWeek; delete finalRecurrence.monthDay; delete finalRecurrence.weeksOfMonth;
+        } else if (finalRecurrence.frequency === 'MONTHLY') {
+             if (monthlyRecurrenceType === 'date') {
+                delete finalRecurrence.weeksOfMonth; delete finalRecurrence.dayOfWeek;
+             } else {
+                delete finalRecurrence.monthDay;
+             }
         }
 
 
@@ -202,7 +220,7 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
     const handleFrequencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newFrequency = e.target.value as RecurrenceRule['frequency'];
         const date = new Date(baseDate + 'T12:00:00Z');
-        const dayOfWeek = date.getUTCDay() as DayOfWeek;
+        const dayOfWeek = (date.getUTCDay() === 0 ? 0 : date.getUTCDay()) as DayOfWeek;
         const monthDay = date.getUTCDate();
 
         let newRecurrence: RecurrenceRule = { frequency: newFrequency };
@@ -222,7 +240,7 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
         const currentDays = recurrence.daysOfWeek || [];
         const newDays = currentDays.includes(day)
             ? currentDays.filter(d => d !== day)
-            : [...currentDays, day].sort((a,b) => a - b);
+            : [...currentDays, day].sort((a,b) => (a === 0 ? 7 : a) - (b === 0 ? 7 : b));
         setRecurrence(prev => ({...prev, daysOfWeek: newDays }));
     };
 
@@ -239,24 +257,27 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
         onClose();
     };
     
-    const inputClasses = "mt-1 block w-full px-3 py-2 bg-white text-text-primary border border-border-color rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent sm:text-sm";
+    const inputClasses = "mt-1 block w-full px-3 py-2 bg-white text-text-primary border border-border-color rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent sm:text-sm transition-colors";
     const labelClasses = "block text-sm font-medium text-text-secondary";
+    const selectClasses = `${inputClasses} appearance-none bg-no-repeat bg-right-2.5`;
+    const selectStyle = { backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23717171' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundSize: '1.25em 1.25em'};
 
     return (
          <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="p-6 md:p-8 space-y-6">
-                    <div className="flex justify-between items-start">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
+                <div className="p-6 md:p-8 border-b border-border-color">
+                     <div className="flex justify-between items-start">
                         <h2 className="text-2xl font-bold text-text-primary">{isEditMode ? 'Evenement Bewerken' : 'Nieuw Evenement'}</h2>
-                        <button type="button" onClick={resetAndClose} className="text-text-secondary hover:text-text-primary transition-colors">
+                        <button type="button" onClick={resetAndClose} className="text-text-secondary hover:text-text-primary transition-colors p-1 -mt-1 -mr-1 rounded-full hover:bg-surface">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
+                </div>
 
-                    {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{error}</div>}
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="p-6 md:p-8 space-y-6 overflow-y-auto">
+                    {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md" role="alert">{error}</div>}
                     
-                    {/* Main details */}
-                    <div className="border-b border-border-color pb-6 space-y-4">
+                    <fieldset className="space-y-4">
                         <div>
                             <label htmlFor="title" className={labelClasses}>Titel *</label>
                             <input type="text" id="title" value={title} onChange={e => setTitle(e.target.value)} className={inputClasses} required />
@@ -265,19 +286,19 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                             <label htmlFor="description" className={labelClasses}>Beschrijving</label>
                             <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} rows={3} className={inputClasses}></textarea>
                         </div>
-                    </div>
+                    </fieldset>
                     
-                    {/* Time and Recurrence */}
-                    <div className="border-b border-border-color pb-6 space-y-4">
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <fieldset className="space-y-4 pt-6 border-t border-border-color">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div>
                                 <label htmlFor="baseDate" className={labelClasses}>Datum (voor herhaling) *</label>
                                 <input type="date" id="baseDate" value={baseDate} onChange={e => setBaseDate(e.target.value)} className={inputClasses} required />
                             </div>
                             <div>
                                 <label className={labelClasses}>Tijd *</label>
-                                <div className="flex gap-2">
+                                <div className="flex items-center gap-2">
                                     <input type="time" id="startTime" value={startTime} onChange={e => setStartTime(e.target.value)} className={inputClasses} required aria-label="Starttijd"/>
+                                    <span className="text-text-secondary">-</span>
                                     <input type="time" id="endTime" value={endTime} onChange={e => setEndTime(e.target.value)} className={inputClasses} required aria-label="Eindtijd"/>
                                 </div>
                             </div>
@@ -285,7 +306,7 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
 
                         <div>
                             <label htmlFor="recurrence" className={labelClasses}>Herhaling</label>
-                             <select id="recurrence" value={recurrence.frequency} onChange={handleFrequencyChange} className={inputClasses}>
+                             <select id="recurrence" value={recurrence.frequency} onChange={handleFrequencyChange} className={selectClasses} style={selectStyle}>
                                 <option value="NONE">Niet herhalend</option>
                                 <option value="WEEKLY">Wekelijks</option>
                                 <option value="BIWEEKLY">Elke 2 weken</option>
@@ -294,18 +315,18 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                         </div>
                         
                         {recurrence.frequency === 'WEEKLY' && (
-                             <div className="pl-4 border-l-2 border-border-color">
+                             <div className="pl-4">
                                 <label className={labelClasses}>Dagen van de week</label>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
+                                <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 mt-2">
                                     {dayOfWeekOptions.map(opt => (
-                                        <label key={opt.value} className="flex items-center text-sm">
+                                        <label key={opt.value} className="flex flex-col items-center p-2 border border-border-color rounded-md cursor-pointer transition-colors has-[:checked]:bg-accent/10 has-[:checked]:border-accent">
+                                            <span className="text-sm font-medium text-text-primary">{opt.label}</span>
                                             <input 
                                                 type="checkbox" 
                                                 checked={recurrence.daysOfWeek?.includes(opt.value)} 
                                                 onChange={() => handleDayOfWeekChange(opt.value)}
-                                                className="form-checkbox h-4 w-4 rounded text-accent focus:ring-accent"
+                                                className="sr-only"
                                             />
-                                            <span className="ml-2">{opt.label}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -313,20 +334,20 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                         )}
 
                         {recurrence.frequency === 'MONTHLY' && (
-                             <div className="pl-4 border-l-2 border-border-color space-y-4">
+                             <div className="pl-4 space-y-4">
                                 <div>
                                     <label className={labelClasses}>Maandelijkse herhaling op basis van:</label>
-                                    <div className="flex gap-4 mt-1">
-                                         <label className="flex items-center"><input type="radio" value="date" checked={monthlyRecurrenceType === 'date'} onChange={() => setMonthlyRecurrenceType('date')} className="form-radio text-accent focus:ring-accent mr-1"/> Datum</label>
-                                         <label className="flex items-center"><input type="radio" value="day" checked={monthlyRecurrenceType === 'day'} onChange={() => setMonthlyRecurrenceType('day')} className="form-radio text-accent focus:ring-accent mr-1"/> Dag van de week</label>
+                                    <div className="flex gap-4 mt-2">
+                                         <label className="flex items-center"><input type="radio" value="date" checked={monthlyRecurrenceType === 'date'} onChange={() => setMonthlyRecurrenceType('date')} className="form-radio h-4 w-4 text-accent focus:ring-accent mr-2"/> Datum</label>
+                                         <label className="flex items-center"><input type="radio" value="day" checked={monthlyRecurrenceType === 'day'} onChange={() => setMonthlyRecurrenceType('day')} className="form-radio h-4 w-4 text-accent focus:ring-accent mr-2"/> Dag van de week</label>
                                     </div>
                                 </div>
                                 {monthlyRecurrenceType === 'day' && (
                                     <div>
-                                        <label className={labelClasses}>Op welke week/weken van de maand?</label>
+                                        <label className={labelClasses}>Week van de maand</label>
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
                                             {weekOfMonthOptions.map(opt => (
-                                                <label key={opt.value} className="flex items-center text-sm">
+                                                <label key={opt.value} className="flex items-center text-sm p-2 border border-border-color rounded-md has-[:checked]:bg-accent/10 has-[:checked]:border-accent">
                                                     <input 
                                                         type="checkbox" 
                                                         checked={recurrence.weeksOfMonth?.includes(opt.value)} 
@@ -341,21 +362,20 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                                 )}
                              </div>
                         )}
-                    </div>
+                    </fieldset>
 
-                    {/* Event Details */}
-                    <div className="border-b border-border-color pb-6 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <fieldset className="space-y-4 pt-6 border-t border-border-color">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div>
                                 <label htmlFor="foodType" className={labelClasses}>Type Event</label>
-                                <select id="foodType" value={foodType} onChange={e => setFoodType(e.target.value)} className={inputClasses}>
+                                <select id="foodType" value={foodType} onChange={e => setFoodType(e.target.value)} className={selectClasses} style={selectStyle}>
                                     <option value="MEALS">Maaltijden</option>
                                     <option value="PACKAGES">Pakketten</option>
                                 </select>
                             </div>
                             <div>
                                 <label htmlFor="accessLevel" className={labelClasses}>Toegang</label>
-                                <select id="accessLevel" value={accessLevel} onChange={e => setAccessLevel(e.target.value as AccessLevel)} className={inputClasses}>
+                                <select id="accessLevel" value={accessLevel} onChange={e => setAccessLevel(e.target.value as AccessLevel)} className={selectClasses} style={selectStyle}>
                                     <option value="WALK_IN">Vrije inloop</option>
                                     <option value="REGISTRATION">Registratie vereist</option>
                                     <option value="REFERRAL">Verwijzing nodig</option>
@@ -366,14 +386,14 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                         {accessLevel === 'REGISTRATION' && (
                             <div>
                                 <label className={labelClasses}>Aanmelddeadline</label>
-                                <div className="flex gap-2">
+                                <div className="flex items-center gap-2">
                                     <input type="date" value={registrationDeadlineDate} onChange={e => setRegistrationDeadlineDate(e.target.value)} className={inputClasses} aria-label="Aanmelddeadline datum"/>
                                     <input type="time" value={registrationDeadlineTime} onChange={e => setRegistrationDeadlineTime(e.target.value)} className={inputClasses} aria-label="Aanmelddeadline tijd"/>
                                 </div>
                             </div>
                         )}
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div>
                                 <label htmlFor="cost" className={labelClasses}>Kosten</label>
                                 <input type="text" id="cost" value={cost} onChange={e => setCost(e.target.value)} className={inputClasses} />
@@ -395,7 +415,7 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
                                             onChange={() => handleDietaryTagChange(tag)}
                                             className="form-checkbox h-4 w-4 rounded text-accent focus:ring-accent"
                                         />
-                                        <span className="ml-2 capitalize">{tag}</span>
+                                        <span className="ml-2 capitalize text-text-primary">{translateDietaryTag(tag)}</span>
                                     </label>
                                 ))}
                             </div>
@@ -403,58 +423,56 @@ export const AddEventForm: React.FC<AddEventFormProps> = ({ isOpen, onClose, onS
 
                         <div>
                             <label htmlFor="verificationStatus" className={labelClasses}>Status</label>
-                            <select id="verificationStatus" value={verificationStatus} onChange={e => setVerificationStatus(e.target.value as VerificationStatus)} className={inputClasses}>
+                             <select id="verificationStatus" value={verificationStatus} onChange={e => setVerificationStatus(e.target.value as VerificationStatus)} className={selectClasses} style={selectStyle}>
                                 <option value="NEEDS_VERIFICATION">Concept</option>
                                 <option value="VERIFIED">Gepubliceerd</option>
                             </select>
                         </div>
-                    </div>
-
-                    {/* Venue */}
-                    <div className="border-b border-border-color pb-6">
-                        <fieldset>
-                            <legend className={labelClasses}>Locatie *</legend>
-                            <div className="mt-2 space-y-2">
-                                <label className="flex items-center">
-                                    <input type="radio" name="venueOption" value="existing" checked={venueOption === 'existing'} onChange={() => setVenueOption('existing')} className="form-radio text-accent focus:ring-accent" />
-                                    <span className="ml-2 text-sm text-text-primary">Bestaande locatie</span>
-                                </label>
-                                {venueOption === 'existing' && (
-                                    <select value={selectedVenueId} onChange={e => setSelectedVenueId(e.target.value)} className={`${inputClasses} ml-6 max-w-sm`}>
-                                        {venues.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+                    </fieldset>
+                    
+                    <fieldset className="pt-6 border-t border-border-color">
+                        <legend className={labelClasses}>Locatie *</legend>
+                        <div className="mt-2 space-y-4">
+                            <label className="flex items-center">
+                                <input type="radio" name="venueOption" value="existing" checked={venueOption === 'existing'} onChange={() => setVenueOption('existing')} className="form-radio h-4 w-4 text-accent focus:ring-accent" />
+                                <span className="ml-2 text-sm text-text-primary">Bestaande locatie</span>
+                            </label>
+                            {venueOption === 'existing' && (
+                                <select value={selectedVenueId} onChange={e => setSelectedVenueId(e.target.value)} className={`${selectClasses} ml-6 max-w-sm`} style={selectStyle}>
+                                    {venues.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+                                </select>
+                            )}
+                            <label className="flex items-center">
+                                <input type="radio" name="venueOption" value="new" checked={venueOption === 'new'} onChange={() => setVenueOption('new')} className="form-radio h-4 w-4 text-accent focus:ring-accent" />
+                                <span className="ml-2 text-sm text-text-primary">Nieuwe locatie toevoegen</span>
+                            </label>
+                            {venueOption === 'new' && (
+                                <div className="ml-6 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                    <input type="text" placeholder="Naam *" value={newVenue.name} onChange={e => setNewVenue(v => ({...v, name: e.target.value}))} className={inputClasses} />
+                                    <input type="text" placeholder="Adres *" value={newVenue.address} onChange={e => setNewVenue(v => ({...v, address: e.target.value}))} className={inputClasses} />
+                                    <input type="url" placeholder="Logo URL" value={newVenue.logoUrl} onChange={e => setNewVenue(v => ({...v, logoUrl: e.target.value}))} className={inputClasses} />
+                                    <select value={newVenue.category} onChange={e => setNewVenue(v => ({...v, category: e.target.value as VenueCategory}))} className={selectClasses} style={selectStyle}>
+                                      <option value="COMMUNITY">{translateVenueCategory('COMMUNITY')}</option>
+                                      <option value="RELIGIOUS">{translateVenueCategory('RELIGIOUS')}</option>
+                                      <option value="FOOD_BANK">{translateVenueCategory('FOOD_BANK')}</option>
+                                      <option value="COMMERCIAL">{translateVenueCategory('COMMERCIAL')}</option>
                                     </select>
-                                )}
-                                <label className="flex items-center">
-                                    <input type="radio" name="venueOption" value="new" checked={venueOption === 'new'} onChange={() => setVenueOption('new')} className="form-radio text-accent focus:ring-accent" />
-                                    <span className="ml-2 text-sm text-text-primary">Nieuwe locatie toevoegen</span>
-                                </label>
-                                {venueOption === 'new' && (
-                                    <div className="ml-6 space-y-2">
-                                        <input type="text" placeholder="Naam *" value={newVenue.name} onChange={e => setNewVenue(v => ({...v, name: e.target.value}))} className={inputClasses} />
-                                        <input type="text" placeholder="Adres *" value={newVenue.address} onChange={e => setNewVenue(v => ({...v, address: e.target.value}))} className={inputClasses} />
-                                        <input type="url" placeholder="Logo URL" value={newVenue.logoUrl} onChange={e => setNewVenue(v => ({...v, logoUrl: e.target.value}))} className={inputClasses} />
-                                        <select value={newVenue.category} onChange={e => setNewVenue(v => ({...v, category: e.target.value as VenueCategory}))} className={inputClasses}>
-                                          <option value="COMMUNITY">Community</option>
-                                          <option value="RELIGIOUS">Religieus</option>
-                                          <option value="FOOD_BANK">Voedselbank</option>
-                                          <option value="FOOD_RESCUE">Voedselredding</option>
-                                          <option value="COMMERCIAL">Commercieel</option>
-                                        </select>
-                                    </div>
-                                )}
-                            </div>
-                        </fieldset>
-                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </fieldset>
+                </form>
 
+                 <div className="p-6 md:p-8 border-t border-border-color bg-surface/50 rounded-b-lg">
                     <div className="flex justify-end items-center space-x-4">
                         <button type="button" onClick={resetAndClose} className="px-4 py-2 text-sm font-medium rounded-md border border-border-color text-text-secondary bg-white hover:bg-surface transition-colors">
                             Annuleren
                         </button>
-                        <button type="submit" className="px-6 py-2 text-sm font-medium rounded-md border border-transparent text-white bg-accent hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
+                        <button type="button" onClick={handleSubmit} className="px-6 py-2 text-sm font-medium rounded-md border border-transparent text-white bg-accent hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
                             {isEditMode ? 'Wijzigingen Opslaan' : 'Evenement Opslaan'}
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

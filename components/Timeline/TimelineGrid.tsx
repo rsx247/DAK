@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import type { FoodEvent, VenueWithDistance } from '../../types';
 import { EventBlock } from '../Events/EventBlock';
@@ -66,7 +65,7 @@ export const TimelineGrid: React.FC<TimelineGridProps> = ({ venues, eventsByVenu
     return Array.from({ length: TOTAL_HOURS }).map((_, hour) => (
       <div
         key={hour}
-        className="text-sm text-text-secondary text-center border-r border-border-color flex-shrink-0 py-2"
+        className="text-sm text-text-secondary text-center border-r border-border-color flex-shrink-0"
         style={{ width: `${SLOT_WIDTH_PX}px` }}
       >
         {`${hour.toString().padStart(2, '0')}:00`}
@@ -95,10 +94,10 @@ export const TimelineGrid: React.FC<TimelineGridProps> = ({ venues, eventsByVenu
       <div className="relative" style={{ width: `${currentVenueColWidth + TIMELINE_WIDTH}px` }}>
 
         {/* Sticky Header Row */}
-        <div className="flex items-center sticky top-0 bg-surface z-20 h-14">
+        <div className="flex sticky top-0 bg-surface z-30 h-14">
             <div 
                 onClick={handleVenueColumnClick}
-                className={`flex-shrink-0 px-2 md:px-4 py-2 border-r border-b border-border-color flex items-center justify-between sticky left-0 bg-surface z-30 transition-all duration-300 ease-in-out ${isCollapsed ? 'cursor-pointer' : ''}`}
+                className={`flex-shrink-0 px-2 md:px-4 border-r border-b border-border-color flex items-center justify-between sticky left-0 bg-surface z-40 transition-all duration-300 ease-in-out ${isCollapsed ? 'cursor-pointer' : ''}`}
                 style={{ width: `${currentVenueColWidth}px`}}
             >
                 <div className="flex-grow overflow-hidden">
@@ -108,63 +107,65 @@ export const TimelineGrid: React.FC<TimelineGridProps> = ({ venues, eventsByVenu
                 </div>
                 <CollapseToggle />
             </div>
-            <div className="flex border-b border-border-color">
+            <div className="flex items-center border-b border-border-color relative z-30 bg-surface">
                 {renderTimeHeaders()}
             </div>
         </div>
         
-        {/* Main Content Grid */}
-        <div className="flex">
-          {/* Sticky Venues List */}
-          <div 
-            onClick={handleVenueColumnClick}
-            className={`flex-shrink-0 border-r border-border-color sticky left-0 bg-white z-20 transition-all duration-300 ease-in-out ${isCollapsed ? 'cursor-pointer' : ''}`}
-            style={{ width: `${currentVenueColWidth}px`}}
-          >
-            <div className="divide-y divide-border-color">
-                {venues.map(venue => (
-                    <div key={venue.id} className="h-24 p-2 flex items-center justify-center">
-                        <VenueCard venue={venue} isCollapsed={isCollapsed} />
-                    </div>
-                ))}
-            </div>
-          </div>
-          
-          {/* Events Timeline */}
-          <div className="relative flex-grow" style={{ width: `${TIMELINE_WIDTH}px` }}>
-              <CurrentTimeLine currentTime={currentTime} minutesToPosition={minutesToPosition} />
-              
-              {/* Grid lines */}
-              {Array.from({ length: TOTAL_HOURS }).map((_, hour) => (
-                <div key={`grid-${hour}`} className="absolute top-0 bottom-0 border-r border-dashed border-border-color" style={{ left: `${hour * SLOT_WIDTH_PX}px`, width: '1px' }}></div>
-              ))}
-              
-              {/* Event Rows */}
-              <div className="divide-y divide-border-color relative">
-                  {venues.map((venue) => (
-                    <div key={venue.id} className="h-24 relative">
-                      {(eventsByVenue.get(venue.id) || []).map((event) => {
-                        const startMinutes = event.startTime.getHours() * 60 + event.startTime.getMinutes();
-                        const endMinutes = event.endTime.getHours() * 60 + event.endTime.getMinutes();
-                        const durationMinutes = Math.max(30, endMinutes - startMinutes);
-                        
-                        const left = minutesToPosition(startMinutes);
-                        const width = minutesToPosition(durationMinutes);
-                        
-                        return (
-                          <EventBlock
-                            key={event.id}
-                            event={event}
-                            onClick={onEventClick}
-                            style={{ left: `${left}px`, width: `${width}px` }}
-                            stickyLeft={currentVenueColWidth}
-                          />
-                        );
-                      })}
-                    </div>
-                  ))}
+        {/* Main Content Grid Wrapper to solve z-index issue */}
+        <div className="relative z-0">
+            <div className="flex">
+              {/* Sticky Venues List */}
+              <div 
+                onClick={handleVenueColumnClick}
+                className={`flex-shrink-0 border-r border-border-color sticky left-0 bg-white z-10 transition-all duration-300 ease-in-out ${isCollapsed ? 'cursor-pointer' : ''}`}
+                style={{ width: `${currentVenueColWidth}px`}}
+              >
+                <div className="divide-y divide-border-color">
+                    {venues.map(venue => (
+                        <div key={venue.id} className="h-24 p-2 flex items-center justify-center">
+                            <VenueCard venue={venue} isCollapsed={isCollapsed} />
+                        </div>
+                    ))}
+                </div>
               </div>
-          </div>
+              
+              {/* Events Timeline */}
+              <div className="relative flex-grow" style={{ width: `${TIMELINE_WIDTH}px` }}>
+                  <CurrentTimeLine currentTime={currentTime} minutesToPosition={minutesToPosition} />
+                  
+                  {/* Grid lines */}
+                  {Array.from({ length: TOTAL_HOURS }).map((_, hour) => (
+                    <div key={`grid-${hour}`} className="absolute top-0 bottom-0 border-r border-dashed border-border-color" style={{ left: `${hour * SLOT_WIDTH_PX}px`, width: '1px' }}></div>
+                  ))}
+                  
+                  {/* Event Rows */}
+                  <div className="divide-y divide-border-color relative">
+                      {venues.map((venue) => (
+                        <div key={venue.id} className="h-24 relative">
+                          {(eventsByVenue.get(venue.id) || []).map((event) => {
+                            const startMinutes = event.startTime.getHours() * 60 + event.startTime.getMinutes();
+                            const endMinutes = event.endTime.getHours() * 60 + event.endTime.getMinutes();
+                            const durationMinutes = Math.max(30, endMinutes - startMinutes);
+                            
+                            const left = minutesToPosition(startMinutes);
+                            const width = minutesToPosition(durationMinutes);
+                            
+                            return (
+                              <EventBlock
+                                key={event.id}
+                                event={event}
+                                onClick={onEventClick}
+                                style={{ left: `${left}px`, width: `${width}px` }}
+                                stickyLeft={currentVenueColWidth}
+                              />
+                            );
+                          })}
+                        </div>
+                      ))}
+                  </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>

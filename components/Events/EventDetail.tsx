@@ -1,7 +1,25 @@
 import React from 'react';
-import type { FoodEvent } from '../../types';
+import type { FoodEvent, AccessLevel } from '../../types';
 import { formatTime } from '../../utils/time';
 import { formatRecurrenceRule } from '../../utils/recurrence';
+
+const translateAccessLevel = (level: AccessLevel): string => {
+    switch (level) {
+        case 'WALK_IN': return 'Vrije inloop';
+        case 'REGISTRATION': return 'Registratie vereist';
+        case 'REFERRAL': return 'Verwijzing nodig';
+        default: return level;
+    }
+};
+
+const translateDietaryTag = (tag: string): string => {
+    switch (tag.toLowerCase()) {
+        case 'vegetarian': return 'Vegetarisch';
+        case 'vegan': return 'Veganistisch';
+        case 'halal': return 'Halal';
+        default: return tag;
+    }
+};
 
 interface EventDetailProps {
   event: FoodEvent;
@@ -54,7 +72,7 @@ export const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, isAdmi
             <InfoRow icon="📍" label="Adres" value={`${event.venue.address}, ${event.venue.city}`} />
             <InfoRow icon="ℹ️" label="Beschrijving" value={event.description} />
             <InfoRow icon="💰" label="Kosten" value={event.cost || 'Onbekend'} />
-            <InfoRow icon="🚪" label="Toegang" value={event.accessLevel.replace('_', ' ')} />
+            <InfoRow icon="🚪" label="Toegang" value={translateAccessLevel(event.accessLevel)} />
             {event.registrationDeadline && (
               <InfoRow 
                 icon="📅" 
@@ -68,7 +86,7 @@ export const EventDetail: React.FC<EventDetailProps> = ({ event, onClose, isAdmi
               />
             )}
             {event.dietaryTags.length > 0 && (
-              <InfoRow icon="🥗" label="Dieet" value={event.dietaryTags.join(', ')} />
+              <InfoRow icon="🥗" label="Dieet" value={event.dietaryTags.map(translateDietaryTag).join(', ')} />
             )}
             {event.sourceUrl && (
               <InfoRow 

@@ -1,8 +1,9 @@
+
 export type AccessLevel = 'WALK_IN' | 'REGISTRATION' | 'REFERRAL';
 
 export type VerificationStatus = 'VERIFIED' | 'NEEDS_VERIFICATION';
 
-export type VenueCategory = 'RELIGIOUS' | 'COMMUNITY' | 'FOOD_BANK' | 'FOOD_RESCUE' | 'COMMERCIAL';
+export type VenueCategory = 'RELIGIOUS' | 'COMMUNITY' | 'FOOD_BANK' | 'COMMERCIAL';
 
 export type TimeViewMode = 'TODAY' | 'NEXT_24H' | 'WEEK';
 

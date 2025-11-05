@@ -1,3 +1,4 @@
+
 import type { EventData, Venue } from '../types';
 
 export const allVenues: Venue[] = [
@@ -10,7 +11,7 @@ export const allVenues: Venue[] = [
       "lng": 4.4716,
       "category": "RELIGIOUS",
       "about": "De Pauluskerk is een plek waar iedereen welkom is voor een praatje, een kop koffie en een warme maaltijd.",
-      "logoUrl": "https://i.imgur.com/vHq1f6X.png",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/pauluskerk.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -22,6 +23,7 @@ export const allVenues: Venue[] = [
       "lng": 4.4758,
       "category": "COMMUNITY",
       "about": "Het Leger des Heils biedt opvang en ondersteuning aan dak- en thuislozen, inclusief maaltijdvoorziening.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/leger-des-heils-centrum.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -88,6 +90,7 @@ export const allVenues: Venue[] = [
       "lng": 4.441355,
       "category": "COMMUNITY",
       "about": "Informatie onbekend",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/huis-van-de-wijk-schiemond-wmo-radar.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -154,6 +157,7 @@ export const allVenues: Venue[] = [
       "lng": 4.367401,
       "category": "COMMUNITY",
       "about": "Informatie onbekend",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/resto-vanharte-buurtrestaurant.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -165,6 +169,7 @@ export const allVenues: Venue[] = [
       "lng": 4.403927,
       "category": "COMMUNITY",
       "about": "Informatie onbekend",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/dock.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -176,6 +181,7 @@ export const allVenues: Venue[] = [
       "lng": 4.393894,
       "category": "COMMUNITY",
       "about": "Informatie onbekend",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/dock.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -196,8 +202,9 @@ export const allVenues: Venue[] = [
       "city": "Rotterdam",
       "lat": 51.912525,
       "lng": 4.44148,
-      "category": "FOOD_RESCUE",
+      "category": "COMMUNITY",
       "about": "Gratis maaltijden gemaakt van gered voedsel. Iedereen is welkom.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/buurtbuik.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -207,8 +214,9 @@ export const allVenues: Venue[] = [
       "city": "Rotterdam",
       "lat": 51.898796,
       "lng": 4.50046,
-      "category": "FOOD_RESCUE",
+      "category": "COMMUNITY",
       "about": "Gratis maaltijden gemaakt van gered voedsel. Iedereen is welkom.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/buurtbuik.webp",
       "verificationStatus": "NEEDS_VERIFICATION"
     },
     {
@@ -264,6 +272,7 @@ export const allVenues: Venue[] = [
       "lng": 4.4682135,
       "category": "RELIGIOUS",
       "about": "Een evangelisatiecentrum waar iedereen welkom is voor activiteiten, maaltijden en gemeenschap. Elke vrijdagavond wordt er een maaltijdavond gehouden.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/inloop-en-bijbelhuis-in-de-gouwstraat.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -286,6 +295,7 @@ export const allVenues: Venue[] = [
       "lng": 4.4546536,
       "category": "RELIGIOUS",
       "about": "Gemeente de Brandaris. Maaltijd en Meer opent om de veertien dagen op donderdagavond de deuren voor mensen die behoeften hebben aan een maaltijd. Na de maaltijd is er ruimte om gezellig koffie/thee te drinken en elkaar te ontmoeten.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/maaltijd-en-meer.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -308,6 +318,7 @@ export const allVenues: Venue[] = [
       "lng": 4.468916,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -319,6 +330,7 @@ export const allVenues: Venue[] = [
       "lng": 4.5023542,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -330,6 +342,7 @@ export const allVenues: Venue[] = [
       "lng": 4.5366803,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -352,6 +365,7 @@ export const allVenues: Venue[] = [
       "lng": 4.4018648,
       "category": "COMMUNITY",
       "about": "Sociaal restaurant waar gezonde en betaalbare maaltijden worden aangeboden. Voor degenen die dit niet kunnen betalen, worden de maaltijden gratis aangeboden.",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/hotspothutspot.webp",
       "verificationStatus": "VERIFIED"
     }
 ];
@@ -735,8 +749,8 @@ export const allEvents: EventData[] = [
       "id": "event-27",
       "title": "BuurtBuik Rotterdam Zuid - Gratis maaltijd",
       "description": "Gratis maaltijd gemaakt van gered voedsel. Iedereen is welkom, geen reservering nodig.",
-      "startTime": new Date("2025-11-05T16:00:00.000Z"),
-      "endTime": new Date("2025-11-05T17:30:00.000Z"),
+      "startTime": new Date("2025-11-05T17:30:00.000Z"),
+      "endTime": new Date("2025-11-05T19:00:00.000Z"),
       "venueId": "venue-20",
       "foodType": "MEALS",
       "dietaryTags": [],
@@ -1102,3 +1116,4 @@ export const allEvents: EventData[] = [
       }
     }
 ];
+

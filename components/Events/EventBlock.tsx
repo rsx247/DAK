@@ -1,7 +1,15 @@
-
 import React from 'react';
-import type { FoodEvent } from '../../types';
+import type { FoodEvent, AccessLevel } from '../../types';
 import { formatTime } from '../../utils/time';
+
+const translateAccessLevel = (level: AccessLevel): string => {
+    switch (level) {
+        case 'WALK_IN': return 'Vrije inloop';
+        case 'REGISTRATION': return 'Registratie vereist';
+        case 'REFERRAL': return 'Verwijzing nodig';
+        default: return level;
+    }
+};
 
 interface EventBlockProps {
   event: FoodEvent;
@@ -37,7 +45,7 @@ export const EventBlock: React.FC<EventBlockProps> = ({ event, onClick, style, s
         <p className="text-xs text-text-secondary truncate">
           {formatTime(event.startTime)} - {formatTime(event.endTime)}
         </p>
-        <p className="text-xs text-text-secondary truncate">{event.cost} &bull; {event.accessLevel.replace('_', ' ')}</p>
+        <p className="text-xs text-text-secondary truncate">{event.cost} &bull; {translateAccessLevel(event.accessLevel)}</p>
       </div>
     </div>
   );

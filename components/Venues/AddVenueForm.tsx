@@ -1,5 +1,16 @@
+
 import React, { useState, useEffect } from 'react';
 import type { Venue, VenueCategory, VenueSubmissionData } from '../../types';
+
+const translateVenueCategory = (category: VenueCategory): string => {
+    switch (category) {
+        case 'COMMUNITY': return 'Sociaal';
+        case 'RELIGIOUS': return 'Religieus';
+        case 'FOOD_BANK': return 'Voedselbank';
+        case 'COMMERCIAL': return 'Commercieel';
+        default: return category;
+    }
+};
 
 interface AddVenueFormProps {
     isOpen: boolean;
@@ -93,11 +104,10 @@ export const AddVenueForm: React.FC<AddVenueFormProps> = ({ isOpen, onClose, onS
                     <div>
                         <label htmlFor="venueCategory" className="block text-sm font-medium text-text-secondary">Categorie</label>
                         <select id="venueCategory" value={category} onChange={e => setCategory(e.target.value as VenueCategory)} className={selectClasses} style={selectStyle}>
-                            <option value="COMMUNITY">Community</option>
-                            <option value="RELIGIOUS">Religieus</option>
-                            <option value="FOOD_BANK">Voedselbank</option>
-                            <option value="FOOD_RESCUE">Voedselredding</option>
-                            <option value="COMMERCIAL">Commercieel</option>
+                            <option value="COMMUNITY">{translateVenueCategory('COMMUNITY')}</option>
+                            <option value="RELIGIOUS">{translateVenueCategory('RELIGIOUS')}</option>
+                            <option value="FOOD_BANK">{translateVenueCategory('FOOD_BANK')}</option>
+                            <option value="COMMERCIAL">{translateVenueCategory('COMMERCIAL')}</option>
                         </select>
                     </div>
                      <div>
