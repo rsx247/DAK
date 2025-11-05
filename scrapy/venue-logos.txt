@@ -1,0 +1,19 @@
+Venue Thumbnails
+================
+
+Base URL: https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/
+
+venue-1 | pauluskerk.webp
+venue-2 | leger-des-heils-centrum.webp
+venue-9 | huis-van-de-wijk-schiemond-wmo-radar.webp
+venue-15 | resto-vanharte-buurtrestaurant.webp
+venue-19 | buurtbuik.webp
+venue-20 | buurtbuik.webp
+venue-25 | inloop-en-bijbelhuis-in-de-gouwstraat.webp
+venue-27 | maaltijd-en-meer.webp
+venue-29 | voedselcentrum-isaak-de-schittering.webp
+venue-30 | voedselcentrum-isaak-de-schittering.webp
+venue-31 | voedselcentrum-isaak-de-schittering.webp
+venue-34 | hotspothutspot.webp
+venue-16 | dock.webp
+venue-17 | dock.webp
