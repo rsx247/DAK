@@ -330,7 +330,7 @@ export const allVenues: Venue[] = [
       "lng": 4.468916,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
-      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering2.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -342,7 +342,7 @@ export const allVenues: Venue[] = [
       "lng": 4.5023542,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
-      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering2.webp",
       "verificationStatus": "VERIFIED"
     },
     {
@@ -354,7 +354,7 @@ export const allVenues: Venue[] = [
       "lng": 4.5366803,
       "category": "FOOD_BANK",
       "about": "Dagelijkse uitdeling van brood, groenten en andere levensmiddelen aan mensen die dit nodig hebben. Geen inkomenscriterium zoals bij de reguliere voedselbank.",
-      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering.webp",
+      "logoUrl": "https://raw.githubusercontent.com/rsx247/DAK/main/assets/logos/thumbs/voedselcentrum-isaak-de-schittering2.webp",
       "verificationStatus": "VERIFIED"
     },
     {
