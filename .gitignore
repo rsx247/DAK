@@ -22,3 +22,34 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Exclude ALL private/work folders and files
+# GitHub is ONLY used as temporary hosting for logo assets (assets/logos/ and assets/logos/thumbs/)
+scrapy/
+Gemini2.5Pro/
+gratis-eten-rotterdam/
+Logo/
+*.zip
+
+# Exclude all files in root and other directories
+/*
+!assets/
+!README.md
+!.gitignore
+
+# Exclude everything in assets except logos
+assets/*
+!assets/logos/
+
+# Exclude everything in assets/logos except image files and thumbs folder
+assets/logos/*
+!assets/logos/*.png
+!assets/logos/*.jpg
+!assets/logos/*.jpeg
+!assets/logos/*.svg
+!assets/logos/*.webp
+!assets/logos/thumbs/
+
+# Only allow .webp files in thumbs folder
+assets/logos/thumbs/*
+!assets/logos/thumbs/*.webp

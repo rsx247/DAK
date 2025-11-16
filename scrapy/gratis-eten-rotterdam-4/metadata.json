@@ -1,7 +1,0 @@
-{
-  "name": "Gratis Eten Rotterdam",
-  "description": "Een app om gratis maaltijden en voedsel-evenementen in Rotterdam en omgeving te vinden. De interface is een tijdlijn die laat zien wat er nu, binnenkort en in de buurt beschikbaar is.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
-}
