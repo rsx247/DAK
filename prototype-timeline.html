@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gratis Eten Rotterdam - Timeline View</title>
+  <style>
+    /* Airbnb Design System */
+    :root {
+      --color-bg: #FFFFFF;
+      --color-surface: #F7F7F7;
+      --color-border: #EBEBEB;
+      
+      --text-primary: #222222;
+      --text-secondary: #717171;
+      --text-tertiary: #B0B0B0;
+      
+      --accent: #FF5A5F;
+      --accent-hover: #E0484D;
+      --accent-light: #FFE8E9;
+      
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+      
+      --radius: 12px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      max-width: 375px;
+      margin: 0 auto;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid var(--color-border);
+      padding: 12px 16px;
+      z-index: 50;
+    }
+    
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    
+    .header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    /* Filter Chips */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      background: white;
+      border-bottom: 1px solid var(--color-border);
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .filter-chip {
+      flex-shrink: 0;
+      height: 32px;
+      padding: 0 16px;
+      border-radius: 16px;
+      border: 1px solid var(--color-border);
+      background: white;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+    
+    .filter-chip.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    
+    /* Timeline Container */
+    .timeline-wrapper {
+      position: relative;
+      height: calc(100vh - 180px);
+      overflow: hidden;
+    }
+    
+    /* Timeline Grid */
+    .timeline-grid {
+      display: flex;
+      height: 100%;
+    }
+    
+    /* Venue Column (fixed left) */
+    .venue-column {
+      flex-shrink: 0;
+      width: 140px;
+      background: white;
+      border-right: 1px solid var(--color-border);
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 10;
+    }
+    
+    .venue-column::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .venue-header {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--color-border);
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .venue-item {
+      height: 80px;
+      padding: 12px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .venue-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    
+    .venue-distance {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+    
+    /* Events Column (scrollable right) */
+    .events-column {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+    
+    .events-column::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Time Header */
+    .time-header {
+      display: flex;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid var(--color-border);
+      z-index: 5;
+      min-width: max-content;
+    }
+    
+    .time-slot {
+      width: 80px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-right: 1px dashed var(--color-border);
+    }
+    
+    .time-slot.current {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    /* Event Rows */
+    .event-rows {
+      position: relative;
+      min-width: max-content;
+    }
+    
+    .event-row {
+      display: flex;
+      height: 80px;
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+    }
+    
+    /* Time Grid Background */
+    .time-grid-cell {
+      width: 80px;
+      flex-shrink: 0;
+      border-right: 1px dashed var(--color-border);
+    }
+    
+    /* Event Block */
+    .event-block {
+      position: absolute;
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 100ms ease-out;
+      overflow: hidden;
+    }
+    
+    .event-block:active {
+      transform: scale(0.97);
+    }
+    
+    .event-block.current {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-light);
+    }
+    
+    .event-time {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      margin-bottom: 2px;
+    }
+    
+    .event-block.current .event-time {
+      color: var(--accent);
+    }
+    
+    .event-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .event-meta {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Current Time Indicator */
+    .current-time-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      z-index: 8;
+      pointer-events: none;
+    }
+    
+    .current-time-badge {
+      position: absolute;
+      top: 4px;
+      left: -20px;
+      background: var(--accent);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    
+    /* View Toggle (optional) */
+    .view-toggle {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      z-index: 100;
+      cursor: pointer;
+    }
+    
+    .view-toggle:active {
+      background: var(--accent-hover);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Header -->
+  <header class="header">
+    <h1>Gratis Eten Rotterdam</h1>
+    <p>Vind gratis maaltijden in jouw buurt</p>
+  </header>
+  
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-chip active">5 km</div>
+    <div class="filter-chip">Vrije inloop</div>
+    <div class="filter-chip">Alle types</div>
+    <div class="filter-chip">Nu beschikbaar</div>
+  </div>
+  
+  <!-- Timeline -->
+  <div class="timeline-wrapper">
+    <div class="timeline-grid">
+      
+      <!-- Venue Column (Left, Fixed) -->
+      <div class="venue-column">
+        <div class="venue-header">Locaties (4)</div>
+        
+        <div class="venue-item">
+          <div class="venue-name">Pauluskerk Rotterdam</div>
+          <div class="venue-distance">📍 2.5km</div>
+        </div>
+        
+        <div class="venue-item">
+          <div class="venue-name">Rotterdamse Voedsel Service</div>
+          <div class="venue-distance">📍 2.8km</div>
+        </div>
+        
+        <div class="venue-item">
+          <div class="venue-name">Stichting Thuisgekookt</div>
+          <div class="venue-distance">📍 2.8km</div>
+        </div>
+        
+        <div class="venue-item">
+          <div class="venue-name">Leger des Heils Rotterdam</div>
+          <div class="venue-distance">📍 2.8km</div>
+        </div>
+      </div>
+      
+      <!-- Events Column (Right, Scrollable) -->
+      <div class="events-column">
+        
+        <!-- Time Header -->
+        <div class="time-header">
+          <div class="time-slot">14:00</div>
+          <div class="time-slot">15:00</div>
+          <div class="time-slot">16:00</div>
+          <div class="time-slot current">17:00</div>
+          <div class="time-slot">18:00</div>
+          <div class="time-slot">19:00</div>
+          <div class="time-slot">20:00</div>
+          <div class="time-slot">21:00</div>
+          <div class="time-slot">22:00</div>
+        </div>
+        
+        <!-- Event Rows -->
+        <div class="event-rows">
+          
+          <!-- Current Time Indicator (17:15) -->
+          <div class="current-time-line" style="left: 100px;">
+            <div class="current-time-badge">NU</div>
+          </div>
+          
+          <!-- Row 1: Pauluskerk -->
+          <div class="event-row">
+            <!-- Background grid -->
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            
+            <!-- Event: Koffie & Broodjes (09:00-21:00, showing 14:00-21:00) -->
+            <div class="event-block" style="left: 0; width: 560px; top: 8px; height: 64px;">
+              <div class="event-time">09:00 - 21:00</div>
+              <div class="event-title">Koffie & Broodjes</div>
+              <div class="event-meta">Gratis • Vrije inloop</div>
+            </div>
+          </div>
+          
+          <!-- Row 2: Rotterdamse Voedsel Service -->
+          <div class="event-row">
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            
+            <!-- Event: Halal Voedseluitdeling (15:00-17:00) -->
+            <div class="event-block current" style="left: 80px; width: 160px; top: 8px; height: 64px;">
+              <div class="event-time">15:00 - 17:00</div>
+              <div class="event-title">Halal Voedseluitdeling</div>
+              <div class="event-meta">Halal • Voedselbank</div>
+            </div>
+          </div>
+          
+          <!-- Row 3: Stichting Thuisgekookt -->
+          <div class="event-row">
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            
+            <!-- Event: Thuisgekookte Maaltijd (16:00-18:00) -->
+            <div class="event-block" style="left: 160px; width: 160px; top: 8px; height: 64px;">
+              <div class="event-time">16:00 - 18:00</div>
+              <div class="event-title">Thuisgekookte Maaltijd</div>
+              <div class="event-meta">Aanmelden vereist</div>
+            </div>
+          </div>
+          
+          <!-- Row 4: Leger des Heils -->
+          <div class="event-row">
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            <div class="time-grid-cell"></div>
+            
+            <!-- Event: Dagopvang Lunch (12:00-13:30, out of view) -->
+            <!-- Event: Warme Maaltijd (17:00-18:30) -->
+            <div class="event-block current" style="left: 240px; width: 120px; top: 8px; height: 64px;">
+              <div class="event-time">17:00 - 18:30</div>
+              <div class="event-title">Warme Maaltijd</div>
+              <div class="event-meta">Gratis • Vrije inloop</div>
+            </div>
+            
+            <!-- Event: Dagopvang Diner (19:00-20:30) -->
+            <div class="event-block" style="left: 400px; width: 120px; top: 8px; height: 64px;">
+              <div class="event-time">19:00 - 20:30</div>
+              <div class="event-title">Dagopvang Diner</div>
+              <div class="event-meta">Gratis • Vrije inloop</div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- View Toggle Button -->
+  <button class="view-toggle">Kaarten weergave</button>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

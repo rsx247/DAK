@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FFFFFF;
+  color: #222222;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Force CSS to load */
+.test-css {
+  background-color: red !important;
+  color: white !important;
+}
+
+/* Test Tailwind classes manually */
+.bg-blue-500 {
+  background-color: #3b82f6 !important;
+}
+
+.text-white {
+  color: white !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.w-20 {
+  width: 5rem !important;
+}
+
+.h-20 {
+  height: 5rem !important;
+}
+
+/* Fix timeline layout manually */
+.flex-1 {
+  flex: 1 1 0% !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+.w-\[140px\] {
+  width: 140px !important;
+}
+
+.bg-white {
+  background-color: white !important;
+}
+
+.border-r {
+  border-right-width: 1px !important;
+}
+
+.border-gray-200 {
+  border-color: #e5e7eb !important;
+}
+
+.z-10 {
+  z-index: 10 !important;
+}
+
+.h-14 {
+  height: 3.5rem !important;
+}
+
+.items-center {
+  align-items: center !important;
+}
+
+.px-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.border-b {
+  border-bottom-width: 1px !important;
+}
+
+.sticky {
+  position: sticky !important;
+}
+
+.top-0 {
+  top: 0 !important;
+}
+
+.z-5 {
+  z-index: 5 !important;
+}
+
+.text-xs {
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em !important;
+}
+
+.p-3 {
+  padding: 0.75rem !important;
+}
+
+.flex-col {
+  flex-direction: column !important;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb !important;
+}
+
+.text-gray-900 {
+  color: #111827 !important;
+}
+
+.leading-tight {
+  line-height: 1.25 !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.border-dashed {
+  border-style: dashed !important;
+}
+
+.min-w-max {
+  min-width: max-content !important;
+}
+
+.relative {
+  position: relative !important;
+}
+
+.absolute {
+  position: absolute !important;
+}
+
+.top-0 {
+  top: 0 !important;
+}
+
+.bottom-0 {
+  bottom: 0 !important;
+}
+
+.w-0\.5 {
+  width: 0.125rem !important;
+}
+
+.bg-primary {
+  background-color: #FF5A5F !important;
+}
+
+.z-8 {
+  z-index: 8 !important;
+}
+
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+.text-primary {
+  color: #FF5A5F !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.px-2 {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.py-1 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap !important;
+}
+
+.border {
+  border-width: 1px !important;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.transition-all {
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis !important;
+}
+
+.nowrap {
+  white-space: nowrap !important;
+}

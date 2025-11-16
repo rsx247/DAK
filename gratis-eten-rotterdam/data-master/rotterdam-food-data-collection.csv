@@ -1,0 +1,17 @@
+Organization,Service Name,Address,Postal Code,City,Phone,Website,Category,Service Type,Access Level,Day,Start Time,End Time,Frequency,Food Type,Dietary,Capacity,Age Restrictions,Languages,Accessibility,Special Notes,Last Updated,Source,Status
+Pauluskerk Rotterdam,Koffie & Broodjes,Hoogstraat 85,3011 PG,Rotterdam,010-414-4444,pauluskerk.nl,Religious,Maaltijden,Vrije inloop,Maandag,09:00,21:00,Dagelijks,Maaltijden,Alle,50,Geen,Nederlands,Rolstoel toegankelijk,Gratis koffie en broodjes beschikbaar,2024-01-15,Website,VERIFIED
+Pauluskerk Rotterdam,Warme Maaltijd,Hoogstraat 85,3011 PG,Rotterdam,010-414-4444,pauluskerk.nl,Religious,Maaltijden,Vrije inloop,Dinsdag,12:00,13:30,Wekelijks,Maaltijden,Alle,30,Geen,Nederlands,Rolstoel toegankelijk,Warme maaltijd elke dinsdag,2024-01-15,Website,VERIFIED
+Leger des Heils Rotterdam,Dagopvang Lunch,Schiedamseweg 95,3026 AN,Rotterdam,010-477-1111,legerdesheils.nl,Religious,Maaltijden,Aanmelden vereist,Maandag,12:00,13:30,Wekelijks,Maaltijden,Alle,25,18+,Nederlands,Rolstoel toegankelijk,Registratie vooraf vereist,2024-01-15,Website,NEEDS_VERIFICATION
+Leger des Heils Rotterdam,Warme Maaltijd,Schiedamseweg 95,3026 AN,Rotterdam,010-477-1111,legerdesheils.nl,Religious,Maaltijden,Vrije inloop,Dinsdag,17:00,18:30,Wekelijks,Maaltijden,Alle,40,Geen,Nederlands,Rolstoel toegankelijk,Gratis warme maaltijd,2024-01-15,Website,NEEDS_VERIFICATION
+Rotterdamse Voedselbank,Voedseluitdeling,Marconistraat 16,3029 AK,Rotterdam,010-477-8888,voedselbank.nl,Food Bank,Pakketten,Aanmelden vereist,Woensdag,14:00,16:00,Wekelijks,Pakketten,Alle,100,Geen,Nederlands,Rolstoel toegankelijk,Voedselpakketten voor geregistreerde klanten,2024-01-15,Website,NEEDS_VERIFICATION
+Rotterdamse Voedselbank,Halal Voedseluitdeling,Marconistraat 16,3029 AK,Rotterdam,010-477-8888,voedselbank.nl,Food Bank,Pakketten,Aanmelden vereist,Donderdag,15:00,17:00,Wekelijks,Pakketten,Halal,50,Geen,Nederlands/Arabisch,Rolstoel toegankelijk,Halal voedselpakketten,2024-01-15,Website,NEEDS_VERIFICATION
+BuurtBuik,Community Maaltijd,Various Locations,3000,Rotterdam,06-12345678,buurtbuik.nl,Community,Maaltijden,Vrije inloop,Vrijdag,18:00,20:00,Wekelijks,Maaltijden,Vegetarisch,20,Geen,Nederlands/Engels,Variabel,Locatie varieert per week,2024-01-15,Website,NEEDS_VERIFICATION
+Stichting Thuisgekookt,Thuisgekookte Maaltijd,Online Service,3000,Rotterdam,010-123-4567,thuisgekookt.nl,Community,Maaltijden,Aanmelden vereist,Dinsdag,16:00,18:00,Wekelijks,Maaltijden,Alle,15,Geen,Nederlands,Online,Thuisbezorging mogelijk,2024-01-15,Website,NEEDS_VERIFICATION
+De Gaarkeuken,Community Kitchen,Spangenstraat 45,3025 RG,Rotterdam,010-456-7890,gaarkeuken.nl,Community,Maaltijden,Vrije inloop,Zaterdag,12:00,14:00,Wekelijks,Maaltijden,Alle,30,Geen,Nederlands,Rolstoel toegankelijk,Community keuken,2024-01-15,Website,NEEDS_VERIFICATION
+Stichting Maaltijd en Meer,Maaltijd Service,Online Service,3000,Rotterdam,010-789-0123,maaltijdenmeer.nl,Community,Maaltijden,Aanmelden vereist,Maandag,17:30,19:00,Wekelijks,Maaltijden,Alle,20,Geen,Nederlands,Online,Online aanmelding vereist,2024-01-15,Website,NEEDS_VERIFICATION
+
+
+
+
+
+
